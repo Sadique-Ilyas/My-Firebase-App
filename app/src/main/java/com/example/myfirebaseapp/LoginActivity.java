@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         signUpTxt = findViewById(R.id.signUpTxt);
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        /*mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        };
+        };*/
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                             else
                             {
                                 startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                finish();
                             }
                         }
                     });
@@ -89,13 +90,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
             }
         });
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }
+    }*/
 }

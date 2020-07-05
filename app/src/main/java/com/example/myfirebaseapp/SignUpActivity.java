@@ -62,7 +62,10 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                startActivity(new Intent(SignUpActivity.this,HomeActivity.class));
+                                Intent intent = new Intent(SignUpActivity.this,HomeActivity.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
                             }
                         }
                     });
