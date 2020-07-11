@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
     TextView signUpTxt;
     FirebaseAuth mFirebaseAuth;
+    FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         loginBtn = findViewById(R.id.loginBtn);
@@ -72,14 +75,35 @@ public class LoginActivity extends AppCompatActivity {
                     mFirebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful())
+                            if (task.isSuccessful())
                             {
-                                Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                if (mFirebaseAuth.getCurrentUser().isEmailVerified())
+                                {
+                                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                    finish();
+                                }
+                                else
+                                {
+                                    Snackbar.make(findViewById(R.id.loginActivity),"Please verify your email address", Snackbar.LENGTH_LONG)
+                                            .setAction("Resend Email", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    if(firebaseUser!=null){
+                                                        firebaseUser.reload();
+                                                        if(!firebaseUser.isEmailVerified()) {
+                                                            firebaseUser.sendEmailVerification();
+                                                            Toast.makeText(LoginActivity.this, "Email Sent!", Toast.LENGTH_LONG).show();
+                                                        }else {
+                                                            Toast.makeText(LoginActivity.this, "Your email has been verified! You can login now.", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                }
+                                            }).show();
+                                }
                             }
                             else
                             {
-                                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
-                                finish();
+                                Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -93,6 +117,11 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void forgotPassword(View view)
+    {
+        startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
     }
 
     /*@Override
