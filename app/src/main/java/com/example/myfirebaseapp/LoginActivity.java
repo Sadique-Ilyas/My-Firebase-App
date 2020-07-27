@@ -124,9 +124,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
     }
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }*/
+        if(firebaseUser != null)
+        {
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+            finish();
+        }
+    }
 }

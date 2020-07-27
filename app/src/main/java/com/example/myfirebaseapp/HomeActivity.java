@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    /*public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
             builder.setMessage("Are you sure you want to logout ?");
@@ -60,6 +60,6 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
 }
